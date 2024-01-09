@@ -60,9 +60,8 @@ const removeFromCart = async (req, res) => {
   try {
     const productId = req.params.id;
     const userId = req.user.id;
-    console.log(productId, userId);
     await Cart.destroy({ where: { idProduct: productId, idUser: userId } });
-    return res.status(200).json({ success: true, message: "Cart Deleted!" });
+    res.status(200).json({ success: true, message: "Cart Deleted!" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

@@ -1,9 +1,14 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize(DB_NAME, DB_USERNAME, process.env.DB_PASS, {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASS,
+  {
+    host: "localhost",
+    dialect: "mysql",
+  }
+);
 
 const checkConnectionDB = async () => {
   try {

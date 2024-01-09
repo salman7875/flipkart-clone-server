@@ -8,8 +8,12 @@ const Rating = sequelize.define("rating", {
   message: DataTypes.STRING,
 });
 
-Rating.sync({ force: false }).then(() => {
-  console.log("Rating, yes re-sync done!");
-});
+Rating.sync({ alter: false })
+  .then(() => {
+    console.log("Rating, yes re-sync done!");
+  })
+  .catch((err) => {
+    console.log("Rating: ", err);
+  });
 
 module.exports = { Rating };
