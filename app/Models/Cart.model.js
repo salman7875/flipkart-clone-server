@@ -1,13 +1,14 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../Config/db");
 
-const Cart = sequelize.define('cart',{
+const Cart = sequelize.define("cart", {
   idProduct: DataTypes.INTEGER,
   idUser: DataTypes.INTEGER,
   quantity: DataTypes.INTEGER,
+  totalAmount: DataTypes.INTEGER,
 });
 
-Cart.sync({ force: false }).then(() => {
+Cart.sync({ alter: false }).then(() => {
   console.log("CART, yes re-sync done!");
 });
 

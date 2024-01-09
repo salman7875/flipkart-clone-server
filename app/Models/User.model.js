@@ -1,10 +1,9 @@
 const { DataTypes } = require("sequelize");
 const { sequelize } = require("../Config/db");
-const { Product } = require("./Product.model");
 
 const User = sequelize.define("user", {
   name: DataTypes.STRING,
-  avatar: DataTypes.TEXT('long'),
+  avatar: DataTypes.TEXT("long"),
   email: DataTypes.STRING,
   password: DataTypes.STRING,
   role: {
@@ -13,8 +12,12 @@ const User = sequelize.define("user", {
   },
 });
 
-User.sync({ force: false }).then(() => {
-  console.log("USER, yes re-sync done!");
-});
+User.sync({ alter: false })
+  .then(() => {
+    console.log("USER, yes re-sync done!");
+  })
+  .catch((err) => {
+    console.log("USER: ", err);
+  });
 
 module.exports = { User };
