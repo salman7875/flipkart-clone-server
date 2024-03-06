@@ -8,6 +8,12 @@ const createRating = async (req, res) => {
     const productId = req.params.id;
     const userId = req.user.id;
     const { message, rating } = req.body;
+    if (+rating > 5 || +rating < 1) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Rating should be between 1 to 5" });
+    }
+
     if (!rating) {
       return res
         .status(400)
@@ -29,9 +35,22 @@ const getRating = async (req, res) => {
   try {
     const productId = req.params.id;
     const ratings = await Rating.findAll({
-      where: { idProduct: productId },
       attributes: ["idUser", "rating", "message", "createdAt", "updatedAt"],
+      where: { idProduct: productId },
     });
+
+    const averageRating = await Rating.aggregate("rating", "SUM", {
+      where: { idProduct: productId },
+    });
+
+    let allStars = [];
+    for (let i = 1; i <= 5; i++) {
+      const res = await Rating.count({
+        where: { rating: i, idProduct: productId },
+      });
+      allStars.push(res);
+    }
+
     const userIds = ratings.map((r) => r.idUser);
     const users = await User.findAll({
       where: { id: { [Op.in]: userIds } },
@@ -39,9 +58,18 @@ const getRating = async (req, res) => {
     });
     const combinedData = ratings.map((rating) => {
       const user = users.find((user) => user.id == rating.idUser);
-      return { ...user.dataValues, ...rating.dataValues };
+      return {
+        ...user.dataValues,
+        ...rating.dataValues,
+      };
     });
-    res.status(200).json({ success: true, ratings: combinedData });
+    res.status(200).json({
+      success: true,
+      noOfRating: averageRating,
+      avgRating: averageRating / 5,
+      allStars,
+      ratings: combinedData,
+    });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

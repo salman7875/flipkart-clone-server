@@ -2,7 +2,6 @@ const { DataTypes } = require("sequelize");
 const { sequelize } = require("../Config/db");
 
 const Order = sequelize.define("order", {
-  idOrder: DataTypes.INTEGER,
   idProduct: DataTypes.INTEGER,
   idUser: DataTypes.INTEGER,
   amount: DataTypes.INTEGER,
