@@ -35,6 +35,7 @@ const getRating = async (req, res) => {
   try {
     const productId = req.params.id;
     const ratings = await Rating.findAll({
+      raw: true,
       attributes: ["idUser", "rating", "message", "createdAt", "updatedAt"],
       where: { idProduct: productId },
     });
@@ -53,6 +54,7 @@ const getRating = async (req, res) => {
 
     const userIds = ratings.map((r) => r.idUser);
     const users = await User.findAll({
+      raw: true,
       where: { id: { [Op.in]: userIds } },
       attributes: ["id", "name", "avatar"],
     });
@@ -65,7 +67,7 @@ const getRating = async (req, res) => {
     });
     res.status(200).json({
       success: true,
-      noOfRating: averageRating,
+      noOfRating: ratings.length,
       avgRating: averageRating / 5,
       allStars,
       ratings: combinedData,
