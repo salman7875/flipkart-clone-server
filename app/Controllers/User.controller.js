@@ -76,6 +76,7 @@ const changeProductQuantity = async (req, res) => {
       attributes: ["productQuantity", "quantity"],
       where: { idProduct: prodId },
     });
+
     if (quantity < 1 || productInfo.productQuantity > 10) {
       return res.status(400).json({
         success: false,
@@ -84,10 +85,17 @@ const changeProductQuantity = async (req, res) => {
     }
 
     // IF VALID UPDATE THE QUANTITY
-    await Cart.update({
-      productQuantity: quantity,
-      quantity: productInfo.quantity + quantity - 1,
-    });
+    await Cart.update(
+      {
+        productQuantity: Number(productInfo.productQuantity) + Number(quantity),
+      },
+      { where: { idProduct: prodId, idUser: req.user.id } }
+    );
+
+    await Cart.update(
+      { quantity: Number(productInfo.quantity) + Number(quantity) },
+      { where: { idUser: req.user.id } }
+    );
     return res
       .status(200)
       .json({ success: true, message: "Successfully Added!" });

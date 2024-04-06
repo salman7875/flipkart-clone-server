@@ -8,12 +8,4 @@ const Order = sequelize.define("order", {
   status: DataTypes.STRING,
 });
 
-Order.sync({ alter: false })
-  .then(() => {
-    console.log("Order Table Created Success!");
-  })
-  .catch((err) => {
-    console.log("Order: ", err);
-  });
-
 module.exports = { Order };

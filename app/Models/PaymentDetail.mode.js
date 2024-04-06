@@ -8,12 +8,4 @@ const PaymentDetail = sequelize.define("payment_detail", {
   idUser: DataTypes.INTEGER,
 });
 
-PaymentDetail.sync({ alter: false })
-  .then(() => {
-    console.log("Payment Details Table Created Success!");
-  })
-  .catch((err) => {
-    console.log("Order: ", err);
-  });
-
 module.exports = { PaymentDetail };

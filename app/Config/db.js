@@ -1,12 +1,13 @@
 const { Sequelize } = require("sequelize");
+const { config } = require("./config");
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASS,
+  config.DB_NAME,
+  config.DB_USERNAME,
+  config.DB_PASS,
   {
-    host: "localhost",
-    dialect: "mysql",
+    host: config.DB_HOST,
+    dialect: config.DB_DIALECT,
   }
 );
 

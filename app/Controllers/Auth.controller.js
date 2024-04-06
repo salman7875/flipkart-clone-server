@@ -1,6 +1,7 @@
 const { User } = require("../Models/User.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { config } = require("../Config/config");
 
 const signup = async (req, res) => {
   try {
@@ -27,7 +28,7 @@ const signup = async (req, res) => {
     });
     const token = jwt.sign(
       { id: newUser.id, role: newUser.role },
-      process.env.JWT_SEC
+      config.JWT_SEC
     );
     res.status(201).json({ success: true, user: newUser, token });
   } catch (err) {
@@ -56,7 +57,7 @@ const login = async (req, res) => {
     }
     const token = jwt.sign(
       { id: userExist.id, role: userExist.role },
-      process.env.JWT_SEC
+      config.JWT_SEC
     );
     res.status(200).json({ success: true, user: userExist, token });
   } catch (err) {
@@ -121,12 +122,10 @@ const forgetPassword = async (req, res) => {
     }
 
     if (await bcrypt.compare(newPassword, validUser.dataValues.password)) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "New should be different from previous password!",
-        });
+      return res.status(400).json({
+        success: false,
+        message: "New should be different from previous password!",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);

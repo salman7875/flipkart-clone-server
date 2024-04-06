@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { config } = require("../Config/config");
 
 const checkAuthToken = async (req, res, next) => {
   let token;
@@ -8,7 +9,7 @@ const checkAuthToken = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "No token found" });
     }
-    jwt.verify(token, process.env.JWT_SEC, (err, data) => {
+    jwt.verify(token, config.JWT_SEC, (err, data) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized!" });
       }

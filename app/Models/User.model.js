@@ -12,12 +12,4 @@ const User = sequelize.define("user", {
   },
 });
 
-User.sync({ alter: false })
-  .then(() => {
-    console.log("USER, yes re-sync done!");
-  })
-  .catch((err) => {
-    console.log("USER: ", err);
-  });
-
 module.exports = { User };

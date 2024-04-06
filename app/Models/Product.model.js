@@ -16,10 +16,4 @@ const Product = sequelize.define("product", {
   idUser: DataTypes.INTEGER,
 });
 
-Product.sync({ alter: false })
-  .then(() => console.log("PRODUCT, yes re-sync done!"))
-  .catch((err) => {
-    console.log("Product", err);
-  });
-
 module.exports = { Product };
